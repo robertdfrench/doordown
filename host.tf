@@ -8,3 +8,7 @@ resource "triton_machine" "host" {
 data "triton_network" "public" {
   name = "Joyent-SDC-Public"
 }
+
+output "host_ip" {
+  value = "${triton_machine.host.primaryip}"
+}

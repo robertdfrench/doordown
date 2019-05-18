@@ -1,14 +1,22 @@
 include lib.mk
 
+.PRECIOUS: terraform.tfstate
 terraform=$(call which, terraform)
+SOURCES=$(wildcard *.tf) terraform.tfvars
 
-apply: plan $(terraform) ## Make the changes
-	$(terraform) apply plan
+deploy: terraform.tfstate ## Deploy changes
+	$(terraform) output -state=$<
 
-plan: lint .terraform/ready $(terraform) ## Check terraform plan for obvious errors
+terraform.tfstate: terraform.plan $(terraform)
+	$(terraform) apply $<
+
+terraform.plan: .terraform/ready $(terraform) $(SOURCES)
 	$(terraform) plan -out=$@
 
-lint: $(terraform) ## Make your terraform look nice
+plan: .terraform/ready $(terraform) ## Review the plan
+	$(terraform) plan
+
+lint: $(terraform) ## Make sure your terraform looks nice
 	$(terraform) fmt -check -diff
 
 .terraform/ready: $(terraform)
