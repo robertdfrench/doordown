@@ -19,6 +19,9 @@ plan: .terraform/ready $(terraform) ## Review the plan
 lint: $(terraform) ## Make sure your terraform looks nice
 	$(terraform) fmt -check -diff
 
+build: ## Compile and run the doordown server
+	which gcc
+
 .terraform/ready: $(terraform)
 	$(terraform) init
 	@touch $@
