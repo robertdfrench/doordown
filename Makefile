@@ -19,8 +19,10 @@ plan: .terraform/ready $(terraform) ## Review the plan
 lint: $(terraform) ## Make sure your terraform looks nice
 	$(terraform) fmt -check -diff
 
-build: ## Compile and run the doordown server
-	which gcc
+build: webserver.exe ## Compile and run the doordown server
+
+webserver.exe: main.c
+	gcc -I/opt/local/include -L/opt/local/lib -lmicrohttpd $< -o $@
 
 .terraform/ready: $(terraform)
 	$(terraform) init
