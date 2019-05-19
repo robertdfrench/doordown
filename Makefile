@@ -2,7 +2,7 @@ include lib.mk
 
 .PRECIOUS: terraform.tfstate
 terraform=$(call which, terraform)
-SOURCES=$(wildcard *.tf) terraform.tfvars
+SOURCES=$(wildcard *.tf) terraform.tfvars provision.sh
 
 deploy: terraform.tfstate ## Deploy changes
 	$(terraform) output -state=$<
