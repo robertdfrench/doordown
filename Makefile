@@ -4,6 +4,9 @@ include lib.mk
 terraform=$(call which, terraform)
 SOURCES=$(wildcard *.tf) terraform.tfvars provision.sh
 
+all: deploy
+	git push doordown
+
 deploy: terraform.tfstate ## Deploy changes
 	$(terraform) output -state=$<
 
@@ -20,6 +23,7 @@ lint: $(terraform) ## Make sure your terraform looks nice
 	$(terraform) fmt -check -diff
 
 build: webserver.exe ## Compile and run the doordown server
+	./webserver.exe 3000
 
 webserver.exe: main.c
 	gcc -I/opt/local/include -L/opt/local/lib -lmicrohttpd $< -o $@
