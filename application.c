@@ -23,9 +23,7 @@ int main() {
     int attachment = fattach(door, path);
     if (attachment == -1) err(1, "Could not attach door to server.door");
 
-    printf("%s will remain attached to this process for 1 hour\n", path);
-
-    sleep(3600);
+    pause();
 
     return 0;
 }
